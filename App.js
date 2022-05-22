@@ -24,10 +24,10 @@ export default function App() {
       .post(
         "https://api.kontenbase.com/query/api/v1/aa8f8c5f-db3b-41d5-aa29-9cc97a003d21/ToDo APP",
         {
-          todo: e,
+          Todo: e,
         }
       )
-      .then((res) => console.log(res))
+      .then((res) => console.log("----", res))
       .catch((error) => {
         console.log(error);
       });
@@ -59,7 +59,7 @@ export default function App() {
         <FlatList
           // style={{ flex: 1 }}
           data={list}
-          renderItem={({ item }) => <TodoCard Todo={item.Todo} />}
+          renderItem={({ item }) => <TodoCard Todo={item} />}
           keyExtractor={(item) => item._id.toString()}
         />
       </View>
@@ -123,9 +123,10 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     // width: "100%",
     fontSize: 30,
-    fontWeight: 500,
+    fontWeight: "500",
     padding: 15,
-    backgroundColor: "chartreuse",
+    backgroundColor: "royalblue",
+    color: "white",
     textAlign: "center",
   },
   cardcontainer: {
@@ -133,10 +134,11 @@ const styles = StyleSheet.create({
     // marginTop: 15,
     // marginBottom: 15,
     margin: 15,
-    backgroundColor: "f9ffa4",
-    borderColor: "chartreuse",
+    backgroundColor: "white",
+    borderColor: "royalblue",
     borderWidth: 3,
     borderRadius: 15,
+    paddingTop: 5,
   },
   input: {
     flexDirection: "row",
@@ -148,22 +150,23 @@ const styles = StyleSheet.create({
   txtinput: {
     flex: 1,
     fontSize: 25,
-    fontWeight: 500,
+    fontWeight: "500",
     textAlign: "center",
     borderRadius: 15,
-    borderColor: "chartreuse",
+    borderColor: "royalblue",
     borderWidth: 1,
     marginEnd: 5,
   },
   inputbtn: {
     paddingVertical: 15,
     paddingHorizontal: 30,
-    backgroundColor: "chartreuse",
+    backgroundColor: "royalblue",
     borderRadius: 15,
   },
   btntext: {
+    color: "white",
     fontSize: 20,
-    fontWeight: 700,
+    fontWeight: "700",
   },
 
   // modal style

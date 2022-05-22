@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
-export default function TodoCard(props) {
+export default function TodoCard({ Todo }) {
+  console.log("props", Todo);
   const [deleteState, setDeteleState] = useState(false);
   const [updateState, setUpdateState] = useState(false);
   const [newTodo, setNewTodo] = useState("");
@@ -29,20 +30,34 @@ export default function TodoCard(props) {
     par3();
   }
 
-  function handleDelete(par1) {
-    // setDeteleState(!deleteState);
+  function handleDelete(id) {
+    Alert.alert(
+      "Remove Todo",
+      "Are you sure ?",
 
-    axios
-      .delete(
-        `https://api.kontenbase.com/query/api/v1/aa8f8c5f-db3b-41d5-aa29-9cc97a003d21/ToDo APP/${par1}`
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch(() => {
-        alert("Error Delete Data");
-      });
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+
+          onPress: (id) => {
+            axios.delete(
+              `https://api.kontenbase.com/query/api/v1/aa8f8c5f-db3b-41d5-aa29-9cc97a003d21/ToDo APP/${id}`
+            );
+            // getTodos();
+          },
+        },
+      ],
+      {
+        cancelable: false,
+      }
+    );
   }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -50,7 +65,7 @@ export default function TodoCard(props) {
         onPress={() => renderUpdate(props.text)}
       >
         <Text style={styles.list} numberOfLines={2}>
-          {props.Todo}
+          {Todo.Todo}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.containericon}>
@@ -60,7 +75,7 @@ export default function TodoCard(props) {
           size={24}
           color="black"
           onPress={() => {
-            handleDelete(props._id);
+            handleDelete(Todo._id);
           }}
         />
       </TouchableOpacity>
@@ -70,11 +85,11 @@ export default function TodoCard(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "greenyellow",
+    backgroundColor: "lightskyblue",
     marginHorizontal: 10,
     marginVertical: 5,
     paddingVertical: 5,
-    borderRadius: 5,
+    borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -87,7 +102,7 @@ const styles = StyleSheet.create({
   },
   list: {
     fontSize: 25,
-    fontWeight: 500,
+    fontWeight: "500",
     paddingStart: 10,
   },
   delete: {
