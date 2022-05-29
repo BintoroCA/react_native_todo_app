@@ -13,16 +13,17 @@ import { useState, useEffect } from "react";
 import TodoCard from "./component/TodoCard";
 import { FlatList } from "react-native";
 import axios from "axios";
+import { setDisabled } from "react-native/Libraries/LogBox/Data/LogBoxData";
 
 export default function App() {
   const [list, setList] = useState([]);
   const [todo, setTodo] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
 
   function addTodo(e) {
     axios
       .post(
-        "https://api.kontenbase.com/query/api/v1/aa8f8c5f-db3b-41d5-aa29-9cc97a003d21/ToDo APP",
+        "https://api.kontenbase.com/query/api/v1/aa8f8c5f-db3b-41d5-aa29-9cc97a003d21/ToDo%20APP",
         {
           Todo: e,
         }
@@ -48,6 +49,35 @@ export default function App() {
       });
   }
 
+  function handleDelete(id) {
+    Alert.alert(
+      "Remove Todo",
+      "Are you sure ?",
+
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+
+          onPress: () => {
+            axios.delete(
+              `https://api.kontenbase.com/query/api/v1/aa8f8c5f-db3b-41d5-aa29-9cc97a003d21/ToDo APP/${id}`
+            );
+            getTodos();
+            Alert.alert("succesfully removed");
+          },
+        },
+      ],
+      {
+        cancelable: false,
+      }
+    );
+  }
+
   useEffect(() => {
     getTodos();
   }, [todo]);
@@ -57,9 +87,10 @@ export default function App() {
       <Text style={styles.title}>My Todo List</Text>
       <View style={styles.cardcontainer}>
         <FlatList
-          // style={{ flex: 1 }}
           data={list}
-          renderItem={({ item }) => <TodoCard Todo={item} />}
+          renderItem={({ item }) => (
+            <TodoCard Todo={item} handleDelete={handleDelete} />
+          )}
           keyExtractor={(item) => item._id.toString()}
         />
       </View>
@@ -67,7 +98,6 @@ export default function App() {
         <TextInput
           style={styles.txtinput}
           onChangeText={(todo) => setTodo(todo)}
-          // value={todo}
           placeholder="what you gotta do ?"
         />
         <TouchableOpacity
@@ -151,7 +181,8 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 25,
     fontWeight: "500",
-    textAlign: "center",
+    // textAlign: "center",
+    paddingStart: 15,
     borderRadius: 15,
     borderColor: "royalblue",
     borderWidth: 1,

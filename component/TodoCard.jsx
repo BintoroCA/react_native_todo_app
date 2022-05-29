@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
-export default function TodoCard({ Todo }) {
+export default function TodoCard({ Todo, handleDelete }) {
   console.log("props", Todo);
   const [deleteState, setDeteleState] = useState(false);
   const [updateState, setUpdateState] = useState(false);
@@ -30,41 +30,13 @@ export default function TodoCard({ Todo }) {
     par3();
   }
 
-  function handleDelete(id) {
-    Alert.alert(
-      "Remove Todo",
-      "Are you sure ?",
-
-      [
-        {
-          text: "No",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-
-          onPress: (id) => {
-            axios.delete(
-              `https://api.kontenbase.com/query/api/v1/aa8f8c5f-db3b-41d5-aa29-9cc97a003d21/ToDo APP/${id}`
-            );
-            // getTodos();
-          },
-        },
-      ],
-      {
-        cancelable: false,
-      }
-    );
-  }
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.containerlist}
         onPress={() => renderUpdate(props.text)}
       >
-        <Text style={styles.list} numberOfLines={2}>
+        <Text style={styles.list} numberOfLines={1}>
           {Todo.Todo}
         </Text>
       </TouchableOpacity>
